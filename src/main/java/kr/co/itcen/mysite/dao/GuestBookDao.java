@@ -33,11 +33,7 @@ public class GuestBookDao {
 			result = (count == 1);
 
 			stmt = connection.createStatement();
-//			rs = stmt.executeQuery("select last_insert_id()");
-//			if (rs.next()) {
-//				Long no = rs.getLong(1);
-//				vo.setNo(no);
-//			}
+
 
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
@@ -176,14 +172,12 @@ public class GuestBookDao {
 				Long no = rs.getLong(1);
 				String content = rs.getString(2);
 				String writer = rs.getString(3);
-				//String passwd = rs.getString(4);
 				String registerdate = rs.getString(4);
 
 				GuestBookVo vo = new GuestBookVo();
 				vo.setNo(no);
 				vo.setText(content);
 				vo.setWriter(writer);
-				//vo.setPassword(passwd);
 				vo.setRegisterdate(registerdate);
 
 				result.add(vo);
@@ -209,8 +203,4 @@ public class GuestBookDao {
 		return result;
 	}
 }
-// insert
 
-// delete
-
-// getlist로 조회하는것
