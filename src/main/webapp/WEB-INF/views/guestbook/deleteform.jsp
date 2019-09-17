@@ -24,7 +24,7 @@
 		</div>
 		<div id="content">
 			<div id="guestbook" class="delete-form">
-				<form method="post" action="<%=request.getContextPath() %>/user?a=delete">
+				<form method="post" action="<%=request.getContextPath() %>/guestbook1?a=delete">
 					<input type="hidden" name="a" value="delete">
 					<input type='hidden' name="no" value="<%=id %>">
 					<label>비밀번호</label>

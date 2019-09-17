@@ -20,7 +20,7 @@
 			<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="guestbook">
-				<form action="<%=request.getContextPath()%>/user?a=insert" method="post">
+				<form action="<%=request.getContextPath()%>/guestbook1?a=insert" method="post">
 					<input type="hidden" name="a" value="insert">
 					<table>
 						<tr>
@@ -47,7 +47,7 @@
 								<td><%=count-index++ %></td>
 								<td><%=vo.getWriter() %></td>
 								<td><%=vo.getRegisterdate() %></td>
-								<td><a href="<%=request.getContextPath()%>/user?a=deleteform&no=<%=vo.getNo() %>">삭제</a></td>
+								<td><a href="<%=request.getContextPath()%>/guestbook1?a=deleteform&no=<%=vo.getNo() %>">삭제</a></td>
 							</tr>
 							<tr>
 								<td colspan=4>
