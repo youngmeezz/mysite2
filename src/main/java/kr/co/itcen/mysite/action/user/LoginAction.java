@@ -22,14 +22,14 @@ public class LoginAction implements Action {
 		String password = request.getParameter("password");
 		
 		UserVo userVo = new UserDao().get(email, password);
-		userVo.setEmail(email);
-		
+
 		if(userVo == null) {
 			request.setAttribute("result", "fail");
 			WebUtils.forward(request, response, "/WEB-INF/views/user/loginform.jsp");
 			return;
-			
 		}
+		
+		userVo.setEmail(email);
 		
 		//인증처리(Session 처리)
 		HttpSession session = request.getSession(true); //없으면 만들어서 줘
