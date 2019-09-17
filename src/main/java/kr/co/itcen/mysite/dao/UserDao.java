@@ -12,6 +12,50 @@ import kr.co.itcen.mysite.vo.UserVo;
 public class UserDao {
 	
 	
+	public UserVo update (Long no, String name,String password,String gender){
+		// TODO Auto-generated method stub
+		UserVo result = null;
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			
+			connection = getConnection();
+
+			String sql = "update user set name = ?, password = ?, gender = ? where no = ?";
+
+			pstmt = connection.prepareStatement(sql);
+
+			pstmt.setString(1, name);
+			pstmt.setString(2, password);
+			pstmt.setString(3, gender);
+			pstmt.setLong(4, no);
+			
+			pstmt.executeUpdate();	
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			// 자원정리해주기 Connection
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+	}
+	
 	public Boolean insert(UserVo vo) {
 		Boolean result = false;
 		Connection connection = null;
@@ -59,6 +103,57 @@ public class UserDao {
 
 		return result;
 	}
+	
+	public UserVo get(String email,String password) {
+		UserVo result = null;
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+
+		try {
+			connection = getConnection();
+
+			String sql = "select no,name,gender from user where email = ? and password = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, email);
+			pstmt.setString(2, password);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				Long no = rs.getLong(1);
+				String name = rs.getString(2);
+				String gender = rs.getString(3);
+				
+				result = new UserVo();
+				result.setNo(no);
+				result.setName(name);
+				result.setGender(gender);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	
+	
 	private Connection getConnection() throws SQLException {
 		Connection connection = null;
 
@@ -74,5 +169,4 @@ public class UserDao {
 
 		return connection;
 	}
-	
 }

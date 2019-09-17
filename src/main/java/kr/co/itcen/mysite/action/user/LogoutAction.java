@@ -5,15 +5,26 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.co.itcen.web.WebUtils;
 import kr.co.itcen.web.mvc.Action;
 
-public class JoinSuccessAction implements Action {
+public class LogoutAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		WebUtils.forward(request, response, "/WEB-INF/views/user/joinsuccess.jsp");
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		
+		
+		if(session != null && session.getAttribute("authUser")!= null) {
+			
+			//로그아웃 처리
+			session.removeAttribute("authUser");
+			session.invalidate();
+			
+		}
+		WebUtils.redirect(request, response, request.getContextPath());
 	}
-
 }
