@@ -18,7 +18,7 @@ public class MainServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		request.setCharacterEncoding("utf-8");
+		//request.setCharacterEncoding("utf-8");
 		
 		String actionName = request.getParameter("a");
 		ActionFactory actionFactory = new MainActionFactory();
