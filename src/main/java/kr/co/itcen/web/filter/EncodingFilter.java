@@ -11,12 +11,13 @@ import javax.servlet.ServletResponse;
 
 public class EncodingFilter implements Filter {
 
-
+	private String encoding;
+	
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		
 		/* request 처리 */
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding(encoding);
 		
 		
 		chain.doFilter(request, response);
@@ -34,6 +35,10 @@ public class EncodingFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 	
+		encoding = filterConfig.getInitParameter("encoding");
+		if(encoding == null) {
+			encoding = "utf-8";
+		}
 	}
 
 	
