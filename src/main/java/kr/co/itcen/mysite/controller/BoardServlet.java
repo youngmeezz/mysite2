@@ -17,7 +17,7 @@ public class BoardServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		request.getServletContext().getInitParameter("servletContextEvent");
+		//request.getServletContext().getInitParameter("servletContextEvent");
 		String actionName = request.getParameter("a");
 		ActionFactory actionFactory = new BoardActionFactory();
 		Action action = actionFactory.getAction(actionName);

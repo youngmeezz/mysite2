@@ -33,7 +33,8 @@
 					<c:forEach items='${list}' var='vo'>
 					<tr>
 						<td>${vo.no }</td>
-						<td style='padding-left:{$50*30}'px><img src='${pageContext.servletContext.contextPath }/assets/images/reply.png'/><a href="${pageContext.servletContext.contextPath }/board?a=viewform">${vo.title }</a></td>
+						<td style='padding-left:{$50*30}'px><img src='${pageContext.servletContext.contextPath }/assets/images/reply.png'/>
+						<a href="${pageContext.servletContext.contextPath }/board?a=viewform&no=${vo.no}&userNo=${vo.userNo}">${vo.title }</a></td>
 						<td>${vo.name }</td>
 						<td>${vo.hit }</td>
 						<td>${vo.registerDate }</td>

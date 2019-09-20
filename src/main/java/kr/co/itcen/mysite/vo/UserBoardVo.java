@@ -8,8 +8,15 @@ public class UserBoardVo {
 	private String name;
 	private int hit;
 	private String registerDate;
+	private Long userNo;
 	
 	
+	public Long getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(Long userNo) {
+		this.userNo = userNo;
+	}
 	public Long getNo() {
 		return no;
 	}

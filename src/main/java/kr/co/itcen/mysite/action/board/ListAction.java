@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.itcen.mysite.dao.BoardDao;
 import kr.co.itcen.mysite.dao.UserBoardDao;
 import kr.co.itcen.mysite.vo.UserBoardVo;
 import kr.co.itcen.web.WebUtils;
@@ -16,13 +17,11 @@ public class ListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		/*index(list)*/
 		List<UserBoardVo> list = new UserBoardDao().getList();
 		request.setAttribute("list", list);
-
 		WebUtils.forward(request, response, "/WEB-INF/views/board/list.jsp");
 
-	}
+	}   
 
 }

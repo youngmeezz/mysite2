@@ -13,7 +13,7 @@ import kr.co.itcen.mysite.vo.UserBoardVo;
 public class UserBoardDao {
 
 	
-	/////select/////
+	/////select 게시판 첫 조회하기User랑 Board랑 조인한 부분/////
 	public List<UserBoardVo> getList() {
 		List<UserBoardVo> result = new ArrayList<UserBoardVo>();
 		
@@ -25,8 +25,8 @@ public class UserBoardDao {
 			connection = getConnection();
 
 		
-			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date \r\n" + 
-					"from user u, board b\r\n" + 
+			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date, b.user_no \r\n" + 
+					"from user u, board b \r\n" + 
 					"where u.no = b.user_no";
 			pstmt = connection.prepareStatement(sql);
 
@@ -40,6 +40,7 @@ public class UserBoardDao {
 				String name = rs.getString(3);
 				int hit = rs.getInt(4);
 				String registerDate = rs.getString(5);
+				Long userNo = rs.getLong(6);
 				
 				UserBoardVo vo = new UserBoardVo();
 				
@@ -48,6 +49,7 @@ public class UserBoardDao {
 				vo.setName(name);
 				vo.setHit(hit);
 				vo.setRegisterDate(registerDate);
+				vo.setUserNo(userNo);
 				
 				result.add(vo);
 			}

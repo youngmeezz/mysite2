@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.co.itcen.mysite.vo.BoardVo;
+import kr.co.itcen.mysite.vo.UserVo;
 
 public class BoardDao {
 
@@ -64,63 +65,54 @@ public class BoardDao {
 	}
 	
 	
-	/////select/////
-//	public List<BoardVo> getList() {
-//		List<BoardVo> result = new ArrayList<BoardVo>();
-//		
-//		Connection connection = null;
-//		PreparedStatement pstmt = null;
-//		ResultSet rs = null;
-//		
-//		try {
-//			connection = getConnection();
-//
-//			//String sql = "select no,name,gender from user where email = ? and password = ?";
-//			String sql = "select no,title,contents,hit,reg_date from board;";
-//			pstmt = connection.prepareStatement(sql);
-//
-//		
-//			rs = pstmt.executeQuery();
-//			
-//			if(rs.next()) {
-//				
-//				Long no = rs.getLong(1);
-//				String title = rs.getString(2);
-//				String contents = rs.getString(3);
-//				int hit = rs.getInt(4);
-//				String registerDate = rs.getString(5);
-//				
-//				BoardVo vo = new BoardVo();
-//				
-//				vo.setNo(no);
-//				vo.setTitle(title);
-//				vo.setContents(contents);
-//				vo.setHit(hit);
-//				vo.setRegisterDate(registerDate);
-//				
-//				result.add(vo);
-//			}
-//
-//		} catch (SQLException e) {
-//			System.out.println("error:" + e);
-//		} finally {
-//			try {
-//				if (rs != null) {
-//					rs.close();
-//				}
-//				if (pstmt != null) {
-//					pstmt.close();
-//				}
-//				if (connection != null) {
-//					connection.close();
-//				}
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//
-//		return result;
-//	}
+	/////select 게시글 제목 클릭해서 View할 내용 조회하기/////
+	public BoardVo get(Long no, Long userNo) {
+		
+		BoardVo vo = null;
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		System.out.println(no);
+		try {
+			connection = getConnection();
+				
+			String sql = "select title, contents from board where no = ? and user_no = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setLong(1, no);
+			pstmt.setLong(2, userNo);
+		
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String title = rs.getString(1);
+				String contents = rs.getString(2);
+				
+				vo = new BoardVo();
+				
+				vo.setTitle(title);
+				vo.setContents(contents);
+			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return vo;
+	}
 	
 	
 	

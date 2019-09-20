@@ -7,7 +7,7 @@
 	<ul>
 		<li><a href="${pageContext.servletContext.contextPath }">안대혁</a></li>
 		<li><a href="${pageContext.servletContext.contextPath }/guestbook1?a=guestbook">방명록</a></li>
-		<li><a href="${pageContext.servletContext.contextPath }/board">게시판</a></li>
+		<li><a href="${pageContext.servletContext.contextPath }/board?a=board">게시판</a></li>
 	</ul>
 </div>
 
