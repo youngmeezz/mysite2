@@ -65,62 +65,62 @@ public class BoardDao {
 	
 	
 	/////select/////
-	public List<BoardVo> getList() {
-		List<BoardVo> result = new ArrayList<BoardVo>();
-		
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			connection = getConnection();
-
-			//String sql = "select no,name,gender from user where email = ? and password = ?";
-			String sql = "select no,title,contents,hit,reg_date from board;";
-			pstmt = connection.prepareStatement(sql);
-
-		
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				
-				Long no = rs.getLong(1);
-				String title = rs.getString(2);
-				String contents = rs.getString(3);
-				int hit = rs.getInt(4);
-				String registerDate = rs.getString(5);
-				
-				BoardVo vo = new BoardVo();
-				
-				vo.setNo(no);
-				vo.setTitle(title);
-				vo.setContents(contents);
-				vo.setHit(hit);
-				vo.setRegisterDate(registerDate);
-				
-				result.add(vo);
-			}
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return result;
-	}
+//	public List<BoardVo> getList() {
+//		List<BoardVo> result = new ArrayList<BoardVo>();
+//		
+//		Connection connection = null;
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		
+//		try {
+//			connection = getConnection();
+//
+//			//String sql = "select no,name,gender from user where email = ? and password = ?";
+//			String sql = "select no,title,contents,hit,reg_date from board;";
+//			pstmt = connection.prepareStatement(sql);
+//
+//		
+//			rs = pstmt.executeQuery();
+//			
+//			if(rs.next()) {
+//				
+//				Long no = rs.getLong(1);
+//				String title = rs.getString(2);
+//				String contents = rs.getString(3);
+//				int hit = rs.getInt(4);
+//				String registerDate = rs.getString(5);
+//				
+//				BoardVo vo = new BoardVo();
+//				
+//				vo.setNo(no);
+//				vo.setTitle(title);
+//				vo.setContents(contents);
+//				vo.setHit(hit);
+//				vo.setRegisterDate(registerDate);
+//				
+//				result.add(vo);
+//			}
+//
+//		} catch (SQLException e) {
+//			System.out.println("error:" + e);
+//		} finally {
+//			try {
+//				if (rs != null) {
+//					rs.close();
+//				}
+//				if (pstmt != null) {
+//					pstmt.close();
+//				}
+//				if (connection != null) {
+//					connection.close();
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//
+//		return result;
+//	}
 	
 	
 	

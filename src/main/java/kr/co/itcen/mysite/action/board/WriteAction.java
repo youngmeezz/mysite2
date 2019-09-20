@@ -21,7 +21,6 @@ public class WriteAction implements Action {
 		HttpSession session = request.getSession(true);
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 
-		
 		String title = request.getParameter("title");
 		String contents = request.getParameter("content");
 		//여기에 UserNo도 받아와야 하는지 궁금 -> write.jsp에 userNo에 대한 내용이 없으니까 안 넣어도 됨

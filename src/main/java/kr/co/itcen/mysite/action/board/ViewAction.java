@@ -51,7 +51,7 @@ public class ViewAction implements Action {
 		boardVo.setRegisterDate(registerDate);
 		//boardVo.setUserNo(authUser.getNo());
 		
-		new BoardDao().getList();
+		//new BoardDao().getList();
 	
 		response.sendRedirect(request.getContextPath() + "/board");
 		
