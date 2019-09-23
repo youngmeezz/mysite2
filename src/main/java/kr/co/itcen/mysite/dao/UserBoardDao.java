@@ -25,9 +25,11 @@ public class UserBoardDao {
 			connection = getConnection();
 
 		
-			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date, b.user_no \r\n" + 
-					"from user u, board b \r\n" + 
-					"where u.no = b.user_no";
+			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date \r\n" + 
+					"from user u, board b\r\n" + 
+					"where u.no = b.user_no and b.status=1\r\n" + 
+					"order by b.no desc\r\n" + 
+					"limit 0,5;";
 			pstmt = connection.prepareStatement(sql);
 
 		
@@ -40,7 +42,8 @@ public class UserBoardDao {
 				String name = rs.getString(3);
 				int hit = rs.getInt(4);
 				String registerDate = rs.getString(5);
-				Long userNo = rs.getLong(6);
+//				Long userNo = rs.getLong(6);
+//				int status = rs.getInt(7);
 				
 				UserBoardVo vo = new UserBoardVo();
 				
@@ -49,13 +52,15 @@ public class UserBoardDao {
 				vo.setName(name);
 				vo.setHit(hit);
 				vo.setRegisterDate(registerDate);
-				vo.setUserNo(userNo);
+//				vo.setUserNo(userNo);
+//				vo.setStatus(status);
 				
 				result.add(vo);
 			}
 
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			//System.out.println("error:" + e);
+			e.printStackTrace();
 		} finally {
 			try {
 				if (rs != null) {

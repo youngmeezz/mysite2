@@ -22,7 +22,12 @@ public class BoardActionFactory extends ActionFactory {
 
 			action = new ModifyAction();
 			
-		}else if("viewform".equals(actionName)) {
+		}else if("deleteform".equals(actionName)) {
+
+			action = new DeleteFormAction();
+			
+		}
+		else if("viewform".equals(actionName)) {
 
 			action = new ViewFormAction();
 			

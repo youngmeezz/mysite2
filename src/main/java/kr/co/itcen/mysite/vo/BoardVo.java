@@ -12,8 +12,15 @@ public class BoardVo {
 	private int orderNumber;
 	private int depth;
 	private Long userNo;
+	private int status;
 	
 	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	public Long getNo() {
 		return no;
 	}
@@ -72,8 +79,6 @@ public class BoardVo {
 	public String toString() {
 		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", hit=" + hit + ", registerDate="
 				+ registerDate + ", groupNumber=" + groupNumber + ", orderNumber=" + orderNumber + ", depth=" + depth
-				+ ", userNo=" + userNo + "]";
+				+ ", userNo=" + userNo + ", status=" + status + "]";
 	}
-
-
 }

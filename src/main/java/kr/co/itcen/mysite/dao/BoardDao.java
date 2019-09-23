@@ -26,7 +26,7 @@ public class BoardDao {
 		try {
 			connection = getConnection();
 
-			String sql2 = "insert into board values(null,?,?,0,now(),1,1,0,?)";
+			String sql2 = "insert into board values(null,?,?,0,now(),1,1,0,?,1)";
 			pstmt = connection.prepareStatement(sql2);
 			
 			pstmt.setString(1, boardVo.getTitle());
@@ -66,35 +66,40 @@ public class BoardDao {
 	
 	
 	/////select 게시글 제목 클릭해서 View할 내용 조회하기/////
-	public BoardVo get(Long no, Long userNo) {
+	public BoardVo get(Long no) {
 		
 		BoardVo vo = null;
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		System.out.println(no);
+		//System.out.println(no);
 		try {
 			connection = getConnection();
 				
-			String sql = "select title, contents from board where no = ? and user_no = ?";
+			String sql = "select title, contents,no,user_no from board where no = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setLong(1, no);
-			pstmt.setLong(2, userNo);
+			//pstmt.setLong(2, userNo);
 		
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
 				String title = rs.getString(1);
 				String contents = rs.getString(2);
+				Long no1 = rs.getLong(3);
+				Long userNo1 = rs.getLong(4);
 				
 				vo = new BoardVo();
 				
 				vo.setTitle(title);
 				vo.setContents(contents);
+				vo.setNo(no1);
+				vo.setUserNo(userNo1);
 			}
 		} catch (SQLException e) {
-			System.out.println("error:" + e);
+			//System.out.println("error:" + e);
+			e.printStackTrace();
 		} finally {
 			try {
 				if (rs != null) {
@@ -116,11 +121,10 @@ public class BoardDao {
 	
 	
 	
-	/////update/////
+	/////update 수정하기/////
 
-	public BoardVo update (Long no, String title, String contents, String registerDate){
-		// TODO Auto-generated method stub
-		BoardVo result = null;
+	public void update (String title, String contents, Long no, Long userNo){
+
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 
@@ -129,16 +133,19 @@ public class BoardDao {
 			connection = getConnection();
 
 			//String sql = "update user set name = ?, password = ?, gender = ? where no = ?";
-			String sql = "update board set title =?, contents =?, reg_date = ? where no = ?";
+			String sql = "update board set title =?, contents =? where no = ? and user_no = ?";
 
 			pstmt = connection.prepareStatement(sql);
-
+	
+			
 			pstmt.setString(1, title);
 			pstmt.setString(2, contents);
-			pstmt.setString(3, registerDate);
-			pstmt.setLong(4, no);
+			//pstmt.setString(3, registerDate); 업데이트한 날짜도 필요한지 질문
+			pstmt.setLong(3, no);
+			pstmt.setLong(4, userNo);
 			
 			pstmt.executeUpdate();	
+			
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -160,12 +167,11 @@ public class BoardDao {
 				}
 			}
 		}
-		return result;
 	}
 	
 	
 	
-	/////delete/////
+	/////delete 삭제하기 update문으로 하고 title이랑 contents만 바꾸면 되나? /////
 	
 	public void delete(Long no, Long userNo) {
 		Connection connection = null;
@@ -175,27 +181,11 @@ public class BoardDao {
 		try {
 			connection = getConnection();
 			
-			//String sql = "select password from board where no = ?";
-			String sql = "select user_no from board where no = ?";
+			String sql = "update board set status=0 where no=?";
 			pstmt = connection.prepareStatement(sql);
-			pstmt.setLong(1, no);
-			rs = pstmt.executeQuery();
+			pstmt.setLong(1, no );
 			
-			Long _UserNo = null;
-			
-			if(rs.next()) {
-				_UserNo = rs.getLong(1);
-			}
-			
-			if(_UserNo.equals(userNo)) {
-				sql = "delete from board where no = ?";
-				pstmt = connection.prepareStatement(sql);
-				pstmt.setLong(1, no );
-				
-				pstmt.executeUpdate();
-			}
-			
-		
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -229,5 +219,19 @@ public class BoardDao {
 
 		return connection;
 	}
+
+
+	public int getCount(String kwd) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	public int getCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
 
 }

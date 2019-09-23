@@ -9,8 +9,15 @@ public class UserBoardVo {
 	private int hit;
 	private String registerDate;
 	private Long userNo;
+	private int status;
 	
 	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	public Long getUserNo() {
 		return userNo;
 	}
@@ -50,8 +57,8 @@ public class UserBoardVo {
 
 	@Override
 	public String toString() {
-		return "User_BoardVo [no=" + no + ", title=" + title + ", name=" + name + ", hit=" + hit + ", registerDate="
-				+ registerDate + "]";
+		return "UserBoardVo [no=" + no + ", title=" + title + ", name=" + name + ", hit=" + hit + ", registerDate="
+				+ registerDate + ", userNo=" + userNo + ", status=" + status + "]";
 	}
 	
 	

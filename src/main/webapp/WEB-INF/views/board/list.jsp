@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +37,7 @@
 						<td>${vo.name }</td>
 						<td>${vo.hit }</td>
 						<td>${vo.registerDate }</td>
-						<td><a href="" class="del">삭제</a></td>
+						<td><a href="${pageContext.servletContext.contextPath }/board?a=deleteform&no=${vo.no}&userNo=${vo.userNo}" class="del">삭제</a></td>
 					</tr>
 					</c:forEach>
 				</table>
