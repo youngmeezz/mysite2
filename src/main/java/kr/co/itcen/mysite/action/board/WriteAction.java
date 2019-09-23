@@ -23,14 +23,19 @@ public class WriteAction implements Action {
 
 		String title = request.getParameter("title");
 		String contents = request.getParameter("content");
-		//여기에 UserNo도 받아와야 하는지 궁금 -> write.jsp에 userNo에 대한 내용이 없으니까 안 넣어도 됨
+		String parentNo = request.getParameter("parent_no");
 		
 		BoardVo boardVo = new BoardVo();
 		boardVo.setTitle(title);
 		boardVo.setContents(contents);
 		boardVo.setUserNo(authUser.getNo());
 		
-		new BoardDao().insert(boardVo);
+		if (parentNo != null && parentNo.length() > 0) {
+			boardVo.setNo(Long.parseLong(parentNo));
+			new BoardDao().insert1(boardVo);
+		} else {
+			new BoardDao().insert(boardVo);
+		}
 	
 		response.sendRedirect(request.getContextPath() + "/board");
 		

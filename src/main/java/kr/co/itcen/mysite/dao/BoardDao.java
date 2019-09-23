@@ -23,23 +23,120 @@ public class BoardDao {
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 
+		//부모글에서 select
+		//update
+		//insert 하기 위한 것
+		//select_id
 		try {
 			connection = getConnection();
-
-			String sql2 = "insert into board values(null,?,?,0,now(),1,1,0,?,1)";
+//		
+//			String sql3 = "update board\r\n" + 
+//					"set o_no = o_no+1\r\n" + 
+//					"where no =? and g_no =? and o_no >= ?";
+//			pstmt = connection.prepareStatement(sql3);
+//			
+//			pstmt.setLong(1, boardVo.getNo());
+//			pstmt.setLong(2, boardVo.getUserNo());
+//		
+//			pstmt.executeUpdate();
+			
+			boardVo.setOrderNumber(1);
+			
+			String sql2 = "insert into board values(null,?,?,0,now(),(select ifnull(max(g_no) + 1, 1) from board as b),?,?,?,1)";
 			pstmt = connection.prepareStatement(sql2);
 			
 			pstmt.setString(1, boardVo.getTitle());
 			pstmt.setString(2, boardVo.getContents());
+			pstmt.setInt(3, boardVo.getOrderNumber());
+			pstmt.setInt(4, boardVo.getDepth());
 			// session authUser로 하는것을 어떻게 해야할지 모르겠음.****************888888
-			pstmt.setLong(3, boardVo.getUserNo());
+			pstmt.setLong(5, boardVo.getUserNo());
 			
 			int count = pstmt.executeUpdate();
 			result = (count == 1);
 
 			stmt = connection.createStatement();
+			
+		
 
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (stmt != null) {
+					stmt.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
+		return result;
+	}
+	
+	
+	
+
+	public Boolean insert1(BoardVo boardVo) {
+		Boolean result = false;
+		Connection connection = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+
+		//부모글에서 select
+		//update
+		//insert 하기 위한 것
+		//select_id
+		
+		BoardVo parentVo = this.get(boardVo.getNo());
+		
+		boardVo.setGroupNumber(parentVo.getGroupNumber());
+		boardVo.setOrderNumber(parentVo.getOrderNumber() + 1);
+		boardVo.setDepth(parentVo.getDepth() + 1);
+		
+		
+		// insert할 글(boardVo) 데이터 설정
+		//o_no, g_no, depth 등 설정
+		
+		
+		
+		try {
+			connection = getConnection();
+
+			String sql3 = "update board " + 
+					"set o_no = o_no + 1 " + 
+					"where g_no =? and o_no >= ?";
+			pstmt = connection.prepareStatement(sql3);
+			
+			pstmt.setLong(1, boardVo.getGroupNumber());
+			pstmt.setLong(2, boardVo.getOrderNumber());
+		
+			pstmt.executeUpdate();
+			
+			
+			String sql2 = "insert into board(no,title,contents,hit,reg_date,g_no,o_no,depth,user_no,status) value(null,?,?,0,now(),?,?,?,?,1)";
+			pstmt = connection.prepareStatement(sql2);
+			
+			pstmt.setString(1, boardVo.getTitle());
+			pstmt.setString(2, boardVo.getContents());
+			pstmt.setInt(3, boardVo.getGroupNumber());
+			pstmt.setInt(4, boardVo.getOrderNumber());
+			pstmt.setInt(5, boardVo.getDepth());
+			// session authUser로 하는것을 어떻게 해야할지 모르겠음.****************888888
+			pstmt.setLong(6, boardVo.getUserNo());
+			
+			int count = pstmt.executeUpdate();
+			result = (count == 1);
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -77,11 +174,20 @@ public class BoardDao {
 		try {
 			connection = getConnection();
 				
-			String sql = "select title, contents,no,user_no from board where no = ?";
+			
+			String sql2 = "update board\r\n" + 
+					"set hit = hit+1\r\n" + 
+					"where no = ?;";
+			pstmt = connection.prepareStatement(sql2);
+			pstmt.setLong(1, no);
+			
+			pstmt.executeUpdate();
+			
+			String sql = "select title, contents,no,user_no,g_no,o_no,depth from board where no = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setLong(1, no);
 			//pstmt.setLong(2, userNo);
-		
+			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -89,6 +195,9 @@ public class BoardDao {
 				String contents = rs.getString(2);
 				Long no1 = rs.getLong(3);
 				Long userNo1 = rs.getLong(4);
+				int groupNo = rs.getInt(5);
+				int orderNo = rs.getInt(6);
+				int depth = rs.getInt(7);
 				
 				vo = new BoardVo();
 				
@@ -96,6 +205,9 @@ public class BoardDao {
 				vo.setContents(contents);
 				vo.setNo(no1);
 				vo.setUserNo(userNo1);
+				vo.setGroupNumber(groupNo);
+				vo.setOrderNumber(orderNo);
+				vo.setDepth(depth);
 			}
 		} catch (SQLException e) {
 			//System.out.println("error:" + e);
@@ -119,8 +231,7 @@ public class BoardDao {
 		return vo;
 	}
 	
-	
-	
+
 	/////update 수정하기/////
 
 	public void update (String title, String contents, Long no, Long userNo){
@@ -202,6 +313,36 @@ public class BoardDao {
 		}
 	}
 
+	/////검색 하기  /////
+	
+	public void search(Long no, Long userNo) {
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			connection = getConnection();
+			
+			String sql = "update board set status=0 where no=?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setLong(1, no );
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	
 	private Connection getConnection() throws SQLException {

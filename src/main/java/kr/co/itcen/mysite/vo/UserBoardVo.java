@@ -10,7 +10,15 @@ public class UserBoardVo {
 	private String registerDate;
 	private Long userNo;
 	private int status;
+	private int depth;
 	
+	public int getDepth() {
+		return this.depth;
+	}
+	
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
 	
 	public int getStatus() {
 		return status;

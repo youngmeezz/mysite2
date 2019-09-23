@@ -17,7 +17,7 @@
 		<div id="content">
 			<div id="board">
 				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="kwd" value="">
+					<input type="text" id="kwd" name="keyword" value="">
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -32,7 +32,10 @@
 					<c:forEach items='${list}' var='vo'>
 					<tr>
 						<td>${vo.no }</td>
-						<td style='padding-left:{$50*30}'px><img src='${pageContext.servletContext.contextPath }/assets/images/reply.png'/>
+						<td style='padding-left:${vo.depth*15}px; text-align:left;'>
+							<c:if test="${vo.depth gt 0}">
+								<img src='${pageContext.servletContext.contextPath }/assets/images/reply.png'/>
+							</c:if>
 						<a href="${pageContext.servletContext.contextPath }/board?a=viewform&no=${vo.no}&userNo=${vo.userNo}">${vo.title }</a></td>
 						<td>${vo.name }</td>
 						<td>${vo.hit }</td>

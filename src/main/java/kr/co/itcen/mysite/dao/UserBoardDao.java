@@ -14,27 +14,32 @@ public class UserBoardDao {
 
 	
 	/////select 게시판 첫 조회하기User랑 Board랑 조인한 부분/////
-	public List<UserBoardVo> getList() {
+	public List<UserBoardVo> getList(String keyword) {
 		List<UserBoardVo> result = new ArrayList<UserBoardVo>();
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
+		
 		try {
 			connection = getConnection();
-
 		
-			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date \r\n" + 
-					"from user u, board b\r\n" + 
-					"where u.no = b.user_no and b.status=1\r\n" + 
-					"order by b.no desc\r\n" + 
+			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date, b.depth " + 
+					"from user u, board b " + 
+					"where u.no = b.user_no and status=1 " + 
+					"and (title like ?" + 
+					" or contents like ?) " + 
+					"order by b.g_no desc, b.o_no asc " + 
 					"limit 0,5;";
+			
 			pstmt = connection.prepareStatement(sql);
 
+			pstmt.setString(1, "%" + keyword + "%");
+			pstmt.setString(2, "%" + keyword +"%");
 		
 			rs = pstmt.executeQuery();
-			
+		
 			while(rs.next()) {
 				
 				Long no = rs.getLong(1);
@@ -42,6 +47,7 @@ public class UserBoardDao {
 				String name = rs.getString(3);
 				int hit = rs.getInt(4);
 				String registerDate = rs.getString(5);
+				
 //				Long userNo = rs.getLong(6);
 //				int status = rs.getInt(7);
 				
@@ -52,6 +58,8 @@ public class UserBoardDao {
 				vo.setName(name);
 				vo.setHit(hit);
 				vo.setRegisterDate(registerDate);
+				vo.setDepth(rs.getInt("depth"));
+
 //				vo.setUserNo(userNo);
 //				vo.setStatus(status);
 				

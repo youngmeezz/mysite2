@@ -17,8 +17,13 @@ public class ListAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String keyword = request.getParameter("keyword");
+		if(keyword == null) {
+			keyword = "";
+		}
 		/*index(list)*/
-		List<UserBoardVo> list = new UserBoardDao().getList();
+		List<UserBoardVo> list = new UserBoardDao().getList(keyword);
 		request.setAttribute("list", list);
 		WebUtils.forward(request, response, "/WEB-INF/views/board/list.jsp");
 

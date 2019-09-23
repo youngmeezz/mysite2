@@ -17,12 +17,8 @@ public class BoardServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		//request.getServletContext().getInitParameter("servletContextEvent");
-//		Integer blockStartNum = paging.getBlockStartNum();
-//		Integer blockLastNum = paging.getBlockLastNum();
-//		Integer lastPageNum = paging.getLastPageNum();
-		
 		String actionName = request.getParameter("a");
+		
 		ActionFactory actionFactory = new BoardActionFactory();
 		Action action = actionFactory.getAction(actionName);
 		action.execute(request, response);

@@ -17,6 +17,8 @@ public class ViewFormAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Long no = Long.parseLong(request.getParameter("no"));
+		//String title = request.getParameter("title");
+		//String content = request.getParameter("content");
 		//Long userNo = Long.parseLong(request.getParameter("userNo"));
 		
 		BoardVo vo = new BoardDao().get(no);
