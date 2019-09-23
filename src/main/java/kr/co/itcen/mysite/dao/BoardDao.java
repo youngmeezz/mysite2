@@ -29,16 +29,7 @@ public class BoardDao {
 		//select_id
 		try {
 			connection = getConnection();
-//		
-//			String sql3 = "update board\r\n" + 
-//					"set o_no = o_no+1\r\n" + 
-//					"where no =? and g_no =? and o_no >= ?";
-//			pstmt = connection.prepareStatement(sql3);
-//			
-//			pstmt.setLong(1, boardVo.getNo());
-//			pstmt.setLong(2, boardVo.getUserNo());
-//		
-//			pstmt.executeUpdate();
+
 			
 			boardVo.setOrderNumber(1);
 			
@@ -50,7 +41,7 @@ public class BoardDao {
 			pstmt.setInt(3, boardVo.getOrderNumber());
 			pstmt.setInt(4, boardVo.getDepth());
 			// session authUser로 하는것을 어떻게 해야할지 모르겠음.****************888888
-			pstmt.setLong(5, boardVo.getUserNo());
+			pstmt.setLong(6, boardVo.getUserNo());
 			
 			int count = pstmt.executeUpdate();
 			result = (count == 1);

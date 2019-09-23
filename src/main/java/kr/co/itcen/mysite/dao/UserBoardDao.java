@@ -48,9 +48,7 @@ public class UserBoardDao {
 				int hit = rs.getInt(4);
 				String registerDate = rs.getString(5);
 				
-//				Long userNo = rs.getLong(6);
-//				int status = rs.getInt(7);
-				
+	
 				UserBoardVo vo = new UserBoardVo();
 				
 				vo.setNo(no);
@@ -60,14 +58,11 @@ public class UserBoardDao {
 				vo.setRegisterDate(registerDate);
 				vo.setDepth(rs.getInt("depth"));
 
-//				vo.setUserNo(userNo);
-//				vo.setStatus(status);
-				
+	
 				result.add(vo);
 			}
 
 		} catch (SQLException e) {
-			//System.out.println("error:" + e);
 			e.printStackTrace();
 		} finally {
 			try {
