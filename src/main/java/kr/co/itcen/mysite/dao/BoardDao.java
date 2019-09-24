@@ -23,10 +23,6 @@ public class BoardDao {
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 
-		//부모글에서 select
-		//update
-		//insert 하기 위한 것
-		//select_id
 		try {
 			connection = getConnection();
 
@@ -40,7 +36,6 @@ public class BoardDao {
 			pstmt.setString(2, boardVo.getContents());
 			pstmt.setInt(3, boardVo.getOrderNumber());
 			pstmt.setInt(4, boardVo.getDepth());
-			// session authUser로 하는것을 어떻게 해야할지 모르겠음.****************888888
 			pstmt.setLong(5, boardVo.getUserNo());
 			
 			int count = pstmt.executeUpdate();
@@ -153,7 +148,7 @@ public class BoardDao {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		//System.out.println(no);
+		
 		try {
 			connection = getConnection();
 				
@@ -166,7 +161,7 @@ public class BoardDao {
 			
 			pstmt.executeUpdate();
 			
-			String sql2 = "select title, contents,no,user_no,g_no,o_no,depth from board where no = ?";
+			String sql2 = "select title,contents,no,user_no,g_no,o_no,depth from board where no = ?";
 			pstmt = connection.prepareStatement(sql2);
 			pstmt.setLong(1, no);
 			
@@ -192,7 +187,6 @@ public class BoardDao {
 				vo.setDepth(depth);
 			}
 		} catch (SQLException e) {
-			//System.out.println("error:" + e);
 			e.printStackTrace();
 		} finally {
 			try {
@@ -232,7 +226,6 @@ public class BoardDao {
 			
 			pstmt.setString(1, title);
 			pstmt.setString(2, contents);
-			//pstmt.setString(3, registerDate); 업데이트한 날짜도 필요한지 질문
 			pstmt.setLong(3, no);
 			pstmt.setLong(4, userNo);
 			
@@ -246,11 +239,11 @@ public class BoardDao {
 				try {
 					pstmt.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 			}
-			// 자원정리해주기 Connection
+			
 			if (connection != null) {
 				try {
 					connection.close();
@@ -263,7 +256,7 @@ public class BoardDao {
 	
 	
 	
-	/////delete 삭제하기 update문으로 하고 title이랑 contents만 바꾸면 되나? /////
+	/////delete 삭제하기 /////
 	
 	public void delete(Long no, Long userNo) {
 		Connection connection = null;
@@ -293,38 +286,6 @@ public class BoardDao {
 			}
 		}
 	}
-
-	/////검색 하기  /////
-	
-	public void search(Long no, Long userNo) {
-		Connection connection = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			connection = getConnection();
-			
-			String sql = "update board set status=0 where no=?";
-			pstmt = connection.prepareStatement(sql);
-			pstmt.setLong(1, no );
-			
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		} finally {
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
 	
 	private Connection getConnection() throws SQLException {
 		Connection connection = null;
