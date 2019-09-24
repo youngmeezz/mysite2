@@ -257,9 +257,10 @@ public class BoardDao {
 		try {
 			connection = getConnection();
 			
-			String sql = "update board set status=0 where no=?";
+			String sql = "update board set status=0 where no=? and user_no=?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setLong(1, no );
+			pstmt.setLong(2, userNo);
 			
 			pstmt.executeUpdate();
 		} catch (SQLException e) {

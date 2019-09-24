@@ -40,7 +40,11 @@
 						<td>${vo.name }</td>
 						<td>${vo.hit }</td>
 						<td>${vo.registerDate }</td>
-						<td><a href="${pageContext.servletContext.contextPath }/board?a=deleteform&no=${vo.no}&userNo=${vo.userNo}" class="del">삭제</a></td>
+						<td>
+							<c:if test="${sessionScope.authUser.no eq vo.userNo }">
+								<a href="${pageContext.servletContext.contextPath }/board?a=deleteform&no=${vo.no}&userNo=${vo.userNo}" class="del">삭제</a>
+							</c:if>
+						</td>
 					</tr>
 					</c:forEach>
 				</table>

@@ -25,7 +25,7 @@ public class UserBoardDao {
 		try {
 			connection = getConnection();
 		
-			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date, b.depth " + 
+			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date, b.depth, b.user_no " + 
 					"from user u, board b " + 
 					"where u.no = b.user_no and status=1 " + 
 					"and (title like ?" + 
@@ -48,7 +48,6 @@ public class UserBoardDao {
 				int hit = rs.getInt(4);
 				String registerDate = rs.getString(5);
 				
-	
 				UserBoardVo vo = new UserBoardVo();
 				
 				vo.setNo(no);
@@ -57,6 +56,7 @@ public class UserBoardDao {
 				vo.setHit(hit);
 				vo.setRegisterDate(registerDate);
 				vo.setDepth(rs.getInt("depth"));
+				vo.setUserNo(rs.getLong("user_no"));
 
 				result.add(vo);
 			}
