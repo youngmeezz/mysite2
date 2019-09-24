@@ -32,7 +32,7 @@ public class WriteAction implements Action {
 		
 		if (parentNo != null && parentNo.length() > 0) {
 			boardVo.setNo(Long.parseLong(parentNo));
-			new BoardDao().insert1(boardVo);
+			new BoardDao().replyInsert(boardVo);
 		} else {
 			new BoardDao().insert(boardVo);
 		}

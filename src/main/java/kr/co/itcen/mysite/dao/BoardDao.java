@@ -33,15 +33,15 @@ public class BoardDao {
 			
 			boardVo.setOrderNumber(1);
 			
-			String sql2 = "insert into board values(null,?,?,0,now(),(select ifnull(max(g_no) + 1, 1) from board as b),?,?,?,1)";
-			pstmt = connection.prepareStatement(sql2);
+			String sql1 = "insert into board values(null,?,?,0,now(),(select ifnull(max(g_no) + 1, 1) from board as b),?,?,?,1)";
+			pstmt = connection.prepareStatement(sql1);
 			
 			pstmt.setString(1, boardVo.getTitle());
 			pstmt.setString(2, boardVo.getContents());
 			pstmt.setInt(3, boardVo.getOrderNumber());
 			pstmt.setInt(4, boardVo.getDepth());
 			// session authUser로 하는것을 어떻게 해야할지 모르겠음.****************888888
-			pstmt.setLong(6, boardVo.getUserNo());
+			pstmt.setLong(5, boardVo.getUserNo());
 			
 			int count = pstmt.executeUpdate();
 			result = (count == 1);
@@ -77,37 +77,30 @@ public class BoardDao {
 	
 	
 
-	public Boolean insert1(BoardVo boardVo) {
+	public Boolean replyInsert(BoardVo boardVo) {
 		Boolean result = false;
 		Connection connection = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 
-		//부모글에서 select
-		//update
-		//insert 하기 위한 것
-		//select_id
 		
+		// insert할 글(boardVo) 데이터 설정
+		//o_no, g_no, depth 등 설정
 		BoardVo parentVo = this.get(boardVo.getNo());
 		
 		boardVo.setGroupNumber(parentVo.getGroupNumber());
 		boardVo.setOrderNumber(parentVo.getOrderNumber() + 1);
 		boardVo.setDepth(parentVo.getDepth() + 1);
-		
-		
-		// insert할 글(boardVo) 데이터 설정
-		//o_no, g_no, depth 등 설정
-		
-		
-		
+
+
 		try {
 			connection = getConnection();
 
-			String sql3 = "update board " + 
+			String sql1 = "update board " + 
 					"set o_no = o_no + 1 " + 
 					"where g_no =? and o_no >= ?";
-			pstmt = connection.prepareStatement(sql3);
+			pstmt = connection.prepareStatement(sql1);
 			
 			pstmt.setLong(1, boardVo.getGroupNumber());
 			pstmt.setLong(2, boardVo.getOrderNumber());
@@ -123,11 +116,10 @@ public class BoardDao {
 			pstmt.setInt(3, boardVo.getGroupNumber());
 			pstmt.setInt(4, boardVo.getOrderNumber());
 			pstmt.setInt(5, boardVo.getDepth());
-			// session authUser로 하는것을 어떻게 해야할지 모르겠음.****************888888
 			pstmt.setLong(6, boardVo.getUserNo());
 			
-			int count = pstmt.executeUpdate();
-			result = (count == 1);
+			pstmt.executeUpdate();
+
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		} finally {
@@ -166,18 +158,17 @@ public class BoardDao {
 			connection = getConnection();
 				
 			
-			String sql2 = "update board\r\n" + 
+			String sql1 = "update board\r\n" + 
 					"set hit = hit+1\r\n" + 
 					"where no = ?;";
-			pstmt = connection.prepareStatement(sql2);
+			pstmt = connection.prepareStatement(sql1);
 			pstmt.setLong(1, no);
 			
 			pstmt.executeUpdate();
 			
-			String sql = "select title, contents,no,user_no,g_no,o_no,depth from board where no = ?";
-			pstmt = connection.prepareStatement(sql);
+			String sql2 = "select title, contents,no,user_no,g_no,o_no,depth from board where no = ?";
+			pstmt = connection.prepareStatement(sql2);
 			pstmt.setLong(1, no);
-			//pstmt.setLong(2, userNo);
 			
 			rs = pstmt.executeQuery();
 			
@@ -234,7 +225,6 @@ public class BoardDao {
 			
 			connection = getConnection();
 
-			//String sql = "update user set name = ?, password = ?, gender = ? where no = ?";
 			String sql = "update board set title =?, contents =? where no = ? and user_no = ?";
 
 			pstmt = connection.prepareStatement(sql);
@@ -351,19 +341,5 @@ public class BoardDao {
 
 		return connection;
 	}
-
-
-	public int getCount(String kwd) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
 
 }

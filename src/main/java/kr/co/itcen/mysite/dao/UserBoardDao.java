@@ -31,7 +31,7 @@ public class UserBoardDao {
 					"and (title like ?" + 
 					" or contents like ?) " + 
 					"order by b.g_no desc, b.o_no asc " + 
-					"limit 0,5;";
+					"limit 0,10;";
 			
 			pstmt = connection.prepareStatement(sql);
 
