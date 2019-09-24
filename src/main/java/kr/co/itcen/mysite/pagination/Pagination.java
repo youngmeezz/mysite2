@@ -2,65 +2,111 @@ package kr.co.itcen.mysite.pagination;
 
 import kr.co.itcen.mysite.dao.BoardDao;
 
-public class Pagination {
+public class Pagination{
 	
-	private final static int pageCount = 5;
-    private int blockStartNum = 0;
-    private int blockLastNum = 0;
-    private int lastPageNum = 0;
+	private int currentPage;		// 현재 페이지
+	private int totalCnt;			// 전체 게시물 수 1
+	private int totalPageCnt;		// 전체 페이지 수
+	private int pageSize;			// 페이징 블럭 사이즈 ex) < 1 2 3 4 5 > 에 보여질 개수
+	private int listSize;			// 한 페이지에 보여질 게시글의 수
+	private int startPage;			// 시작 페이지
+	private int endPage;			// 마지막 페이지
+	private boolean prev;			// 이전 버튼
+	private boolean next;			// 다음 버튼
+	
+public Pagination(int currentPage, int totalCnt, int listSize, int pageSize) {
+		super();
+		this.currentPage = currentPage;
+		this.totalCnt = totalCnt;
+		this.listSize = listSize;
+		this.pageSize = pageSize;
+		
+		this.totalPageCnt = (int) Math.ceil(this.totalCnt / (double)listSize);
+		
+		if (this.totalPageCnt < this.currentPage) {
+			this.currentPage = this.totalPageCnt;
+		}
+		
+		this.startPage = ((this.currentPage - 1) / this.pageSize) * this.pageSize + 1;
+		this.endPage = this.startPage + this.pageSize - 1;
+		
+		if (this.endPage > this.totalPageCnt) {
+			this.endPage = this.totalPageCnt;
+		}
+		
+		this.prev = (this.startPage > this.pageSize) ? true : false;
+		this.next = (this.totalPageCnt > this.pageSize && this.endPage < this.totalPageCnt) ? true : false;
+	}
 
-    public int getBlockStartNum() {
-        return blockStartNum;
-    }
-    public void setBlockStartNum(int blockStartNum) {
-        this.blockStartNum = blockStartNum;
-    }
-    public int getBlockLastNum() {
-        return blockLastNum;
-    }
-    public void setBlockLastNum(int blockLastNum) {
-        this.blockLastNum = blockLastNum;
-    }
-    public int getLastPageNum() {
-        return lastPageNum;
-    }
-    public void setLastPageNum(int lastPageNum) {
-        this.lastPageNum = lastPageNum;
-    }
+	public int getCurrentPage() {
+		return currentPage;
+	}
 
-    // block을 생성
-    // 현재 페이지가 속한 block의 시작 번호, 끝 번호를 계산
-    public void makeBlock(int curPage){
-        int blockNum = 0;
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
 
-        blockNum = (int)Math.floor((curPage-1)/ pageCount);
-        blockStartNum = (pageCount * blockNum) + 1;
-        blockLastNum = blockStartNum + (pageCount-1);
-    }
+	public int getTotalCnt() {
+		return totalCnt;
+	}
 
-    // 총 페이지의 마지막 번호
-    public void makeLastPageNum() {
-        BoardDao dao = new BoardDao();
-        int total = dao.getCount();
+	public void setTotalCnt(int totalCnt) {
+		this.totalCnt = totalCnt;
+	}
 
-        if( total % pageCount == 0 ) {
-            lastPageNum = (int)Math.floor(total/pageCount);
-        }
-        else {
-            lastPageNum = (int)Math.floor(total/pageCount) + 1;
-        }
-    }
+	public int getTotalPageCnt() {
+		return totalPageCnt;
+	}
 
-    // 검색을 했을 때 총 페이지의 마지막 번호
-    public void makeLastPageNum(String kwd) {
-    	BoardDao dao = new BoardDao();
-        int total = dao.getCount(kwd);
+	public void setTotalPageCnt(int totalPageCnt) {
+		this.totalPageCnt = totalPageCnt;
+	}
 
-        if( total % pageCount == 0 ) {
-            lastPageNum = (int)Math.floor(total/pageCount);
-        }
-        else {
-            lastPageNum = (int)Math.floor(total/pageCount) + 1;
-        }
-    }
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public int getListSize() {
+		return listSize;
+	}
+
+	public void setListSize(int listSize) {
+		this.listSize = listSize;
+	}
+
+	public int getStartPage() {
+		return startPage;
+	}
+
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
+
+	public int getEndPage() {
+		return endPage;
+	}
+
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+
+	public boolean isPrev() {
+		return prev;
+	}
+
+	public void setPrev(boolean prev) {
+		this.prev = prev;
+	}
+
+	public boolean isNext() {
+		return next;
+	}
+
+	public void setNext(boolean next) {
+		this.next = next;
+	}
 }

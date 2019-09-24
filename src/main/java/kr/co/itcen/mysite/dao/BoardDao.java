@@ -26,7 +26,6 @@ public class BoardDao {
 		try {
 			connection = getConnection();
 
-			
 			boardVo.setOrderNumber(1);
 			
 			String sql1 = "insert into board values(null,?,?,0,now(),(select ifnull(max(g_no) + 1, 1) from board as b),?,?,?,1)";
@@ -42,8 +41,6 @@ public class BoardDao {
 			result = (count == 1);
 
 			stmt = connection.createStatement();
-			
-		
 
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
@@ -69,9 +66,6 @@ public class BoardDao {
 		return result;
 	}
 	
-	
-	
-
 	public Boolean replyInsert(BoardVo boardVo) {
 		Boolean result = false;
 		Connection connection = null;
@@ -79,7 +73,6 @@ public class BoardDao {
 		ResultSet rs = null;
 		PreparedStatement pstmt = null;
 
-		
 		// insert할 글(boardVo) 데이터 설정
 		//o_no, g_no, depth 등 설정
 		BoardVo parentVo = this.get(boardVo.getNo());
@@ -96,12 +89,10 @@ public class BoardDao {
 					"set o_no = o_no + 1 " + 
 					"where g_no =? and o_no >= ?";
 			pstmt = connection.prepareStatement(sql1);
-			
 			pstmt.setLong(1, boardVo.getGroupNumber());
 			pstmt.setLong(2, boardVo.getOrderNumber());
 		
 			pstmt.executeUpdate();
-			
 			
 			String sql2 = "insert into board(no,title,contents,hit,reg_date,g_no,o_no,depth,user_no,status) value(null,?,?,0,now(),?,?,?,?,1)";
 			pstmt = connection.prepareStatement(sql2);

@@ -58,7 +58,6 @@ public class UserBoardDao {
 				vo.setRegisterDate(registerDate);
 				vo.setDepth(rs.getInt("depth"));
 
-	
 				result.add(vo);
 			}
 
