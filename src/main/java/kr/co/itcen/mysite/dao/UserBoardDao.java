@@ -8,19 +8,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.co.itcen.mysite.pagination.Pagination;
 import kr.co.itcen.mysite.vo.UserBoardVo;
 
 public class UserBoardDao {
 
 	
 	/////select 게시판 첫 조회하기User랑 Board랑 조인한 부분/////
-	public List<UserBoardVo> getList(String keyword) {
+	public List<UserBoardVo> getList(String keyword,Pagination pagination) {
 		List<UserBoardVo> result = new ArrayList<UserBoardVo>();
 		
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
 		
 		try {
 			connection = getConnection();
@@ -31,12 +31,13 @@ public class UserBoardDao {
 					"and (title like ?" + 
 					" or contents like ?) " + 
 					"order by b.g_no desc, b.o_no asc " + 
-					"limit 0,10;";
+					"limit ?, 10;";
 			
 			pstmt = connection.prepareStatement(sql);
 
 			pstmt.setString(1, "%" + keyword + "%");
 			pstmt.setString(2, "%" + keyword +"%");
+			pstmt.setInt(3, (pagination.getCurrentPage() - 1) * pagination.getListSize());
 		
 			rs = pstmt.executeQuery();
 		
@@ -57,7 +58,8 @@ public class UserBoardDao {
 				vo.setRegisterDate(registerDate);
 				vo.setDepth(rs.getInt("depth"));
 				vo.setUserNo(rs.getLong("user_no"));
-
+				//vo.setPage(rs.getInt("page"));
+				
 				result.add(vo);
 			}
 
@@ -81,7 +83,56 @@ public class UserBoardDao {
 
 		return result;
 	}
+	
+	public int getBoardCnt(String keyword) {
+		int cnt = 0;
 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = this.getConnection();
+
+			String sql = "select count(*) as 'cnt' from board where title like ? or contents like ?";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + ((keyword == null) ? "" : keyword) + "%");
+			pstmt.setString(2, "%" + ((keyword == null) ? "" : keyword) + "%");
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				cnt = rs.getInt("cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+
+				if (pstmt != null) {
+					pstmt.close();
+				}
+
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return cnt;
+	}
+
+
+	public UserBoardVo getBoard(UserBoardVo userBoardVo, boolean increaseHitCnt) {
+		UserBoardVo vo = null;
+			return vo;
+	}
 
 	private Connection getConnection() throws SQLException {
 		Connection connection = null;

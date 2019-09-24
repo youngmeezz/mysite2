@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.co.itcen.mysite.dao.BoardDao;
+import kr.co.itcen.mysite.pagination.*;
 import kr.co.itcen.mysite.dao.UserBoardDao;
 import kr.co.itcen.mysite.vo.UserBoardVo;
 import kr.co.itcen.web.WebUtils;
@@ -22,9 +22,23 @@ public class ListAction implements Action {
 		if(keyword == null) {
 			keyword = "";
 		}
+		String pageStr = request.getParameter("page");
+		//int page = Integer.parseInt(request.getParameter("page"));
+		int page = Integer.parseInt((pageStr == null || pageStr.length() ==0) ? "1" : pageStr);
+		
+		
+		
+		UserBoardDao dao = new UserBoardDao();
+
+		int totalCnt = dao.getBoardCnt(keyword);
+		Pagination pagination = new Pagination(page, totalCnt, 10, 5);
+
 		/*index(list)*/
-		List<UserBoardVo> list = new UserBoardDao().getList(keyword);
+		List<UserBoardVo> list = dao.getList(keyword, pagination);
 		request.setAttribute("list", list);
+		//System.out.println(pagination.getCurrentPage());
+		request.setAttribute("pagination", pagination);
+	
 		WebUtils.forward(request, response, "/WEB-INF/views/board/list.jsp");
 
 	}   

@@ -1,6 +1,5 @@
 package kr.co.itcen.mysite.pagination;
 
-import kr.co.itcen.mysite.dao.BoardDao;
 
 public class Pagination{
 	

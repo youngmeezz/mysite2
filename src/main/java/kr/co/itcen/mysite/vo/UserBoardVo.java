@@ -12,6 +12,7 @@ public class UserBoardVo {
 	private int status;
 	private int depth;
 	
+
 	public int getDepth() {
 		return this.depth;
 	}
@@ -66,8 +67,7 @@ public class UserBoardVo {
 	@Override
 	public String toString() {
 		return "UserBoardVo [no=" + no + ", title=" + title + ", name=" + name + ", hit=" + hit + ", registerDate="
-				+ registerDate + ", userNo=" + userNo + ", status=" + status + "]";
+				+ registerDate + ", userNo=" + userNo + ", status=" + status + ", depth=" + depth + "]";
 	}
-	
 	
 }

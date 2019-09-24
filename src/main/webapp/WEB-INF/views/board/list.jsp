@@ -16,8 +16,9 @@
 		<c:import url="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
 			<div id="board">
-				<form id="search_form" action="" method="post">
-					<input type="text" id="kwd" name="keyword" value="">
+				<form id="search_form" action="${pageContext.servletContext.contextPath }/board" method="get">
+					<input type="text" id="kwd" name="keyword" value=""/>
+					<input type="hidden" name="page" value="${param.page }"/>
 					<input type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -51,13 +52,23 @@
 				<!-- pager 추가 -->
 				<div class="pager">
 					<ul>
-						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
-						<li class="selected">2</li>
-						<li><a href="">3</a></li>
-						<li>4</li>
-						<li>5</li>
-						<li><a href="">▶</a></li>
+					<c:if test="${pagination.prev }">
+							<li><a href="${pageContext.servletContext.contextPath }/board?keyword=${param.keyword }&page=${pagination.startPage - 1 }">◀</a></li>
+						</c:if>
+						<c:forEach begin="${pagination.startPage }" end="${pagination.endPage }" var="pg">
+							<c:choose>
+								<c:when test="${pg eq pagination.currentPage }">
+									<li class="selected"><a href="${pageContext.servletContext.contextPath }/board?keyword=${param.keyword }&page=${pg }" >${pg }</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.servletContext.contextPath }/board?keyword=${param.keyword }&page=${pg }" >${pg }</a></li>
+								</c:otherwise>
+							</c:choose>
+
+						</c:forEach>
+						<c:if test="${pagination.next }">
+							<li><a href="${pageContext.servletContext.contextPath }/board?keyword=${param.keyword }&page=${pagination.endPage + 1 }">▶</a></li>
+						</c:if>
 					</ul>
 				</div>					
 				<!-- pager 추가 -->
