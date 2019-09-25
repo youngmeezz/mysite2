@@ -5,7 +5,7 @@
 	pageEncoding="UTF-8"%>
 <div id="navigation">
 	<ul>
-		<li><a href="${pageContext.servletContext.contextPath }">안대혁</a></li>
+		<li><a href="${pageContext.servletContext.contextPath }">권영미</a></li>
 		<li><a href="${pageContext.servletContext.contextPath }/guestbook1?a=guestbook">방명록</a></li>
 		<li><a href="${pageContext.servletContext.contextPath }/board?a=board">게시판</a></li>
 	</ul>

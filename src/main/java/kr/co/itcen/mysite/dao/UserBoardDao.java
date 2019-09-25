@@ -59,8 +59,7 @@ public class UserBoardDao {
 				vo.setDepth(rs.getInt("depth"));
 				vo.setUserNo(rs.getLong("user_no"));
 				vo.setStatus(rs.getInt("status"));
-				//vo.setPage(rs.getInt("page"));
-				
+		
 				result.add(vo);
 			}
 

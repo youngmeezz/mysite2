@@ -144,9 +144,9 @@ public class BoardDao {
 			connection = getConnection();
 				
 			
-			String sql1 = "update board\r\n" + 
-					"set hit = hit+1\r\n" + 
-					"where no = ?;";
+			String sql1 = "update board " + 
+					" set hit = hit+1 " + 
+					" where no = ? ";
 			pstmt = connection.prepareStatement(sql1);
 			pstmt.setLong(1, no);
 			
