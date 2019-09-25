@@ -131,8 +131,9 @@ public class BoardDao {
 	}
 	
 	
-	/////select 게시글 제목 클릭해서 View할 내용 조회하기/////
-	public BoardVo get(Long no) {
+	
+	//// 조회수 증가하기//////
+	public BoardVo hit(Long no) {
 		
 		BoardVo vo = null;
 		
@@ -151,6 +152,42 @@ public class BoardDao {
 			pstmt.setLong(1, no);
 			
 			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return vo;
+	}
+	
+	
+	
+	/////select 게시글 제목 클릭해서 View할 내용 조회하기/////
+	public BoardVo get(Long no) {
+		
+		BoardVo vo = null;
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			connection = getConnection();
+				
 			
 			String sql2 = "select title,contents,no,user_no,g_no,o_no,depth from board where no = ?";
 			pstmt = connection.prepareStatement(sql2);

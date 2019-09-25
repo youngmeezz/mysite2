@@ -19,8 +19,9 @@ public class ViewFormAction implements Action {
 		Long no = Long.parseLong(request.getParameter("no"));
 	
 		BoardVo vo = new BoardDao().get(no);
-		
+		new BoardDao().hit(no);
 		request.setAttribute("vo", vo);
+		
 		
 		WebUtils.forward(request, response,"/WEB-INF/views/board/view.jsp");
 	}
