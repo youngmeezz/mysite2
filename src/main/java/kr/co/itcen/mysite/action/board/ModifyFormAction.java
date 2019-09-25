@@ -17,9 +17,7 @@ public class ModifyFormAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
 			Long no = Long.parseLong(request.getParameter("no"));
-//			String title = request.getParameter("title");
-//			String content = request.getParameter("content");
-			
+
 			BoardVo vo = new BoardDao().get(no);
 			
 			request.setAttribute("vo", vo);

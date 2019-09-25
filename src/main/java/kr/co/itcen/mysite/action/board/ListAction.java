@@ -23,7 +23,6 @@ public class ListAction implements Action {
 			keyword = "";
 		}
 		String pageStr = request.getParameter("page");
-		//int page = Integer.parseInt(request.getParameter("page"));
 		int page = Integer.parseInt((pageStr == null || pageStr.length() ==0) ? "1" : pageStr);
 		
 		
@@ -36,7 +35,6 @@ public class ListAction implements Action {
 		/*index(list)*/
 		List<UserBoardVo> list = dao.getList(keyword, pagination);
 		request.setAttribute("list", list);
-		//System.out.println(pagination.getCurrentPage());
 		request.setAttribute("pagination", pagination);
 	
 		WebUtils.forward(request, response, "/WEB-INF/views/board/list.jsp");

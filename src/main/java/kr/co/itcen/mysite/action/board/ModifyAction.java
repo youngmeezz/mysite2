@@ -24,7 +24,6 @@ public class ModifyAction implements Action {
 		String title = request.getParameter("title");
 		String contents = request.getParameter("content");
 		Long no = Long.parseLong(request.getParameter("no"));
-		//Long userNo = Long.parseLong(request.getParameter("userNo"));
 		//여기에 UserNo도 받아와야 하는지 궁금 -> write.jsp에 userNo에 대한 내용이 없으니까 안 넣어도 됨
 		
 		BoardVo boardVo = new BoardVo();
@@ -33,7 +32,6 @@ public class ModifyAction implements Action {
 		boardVo.setContents(contents);
 		boardVo.setNo(no);
 		boardVo.setUserNo(authUser.getNo());
-		//boardVo.setUserNo(userNo);
 		
 		new BoardDao().update(title, contents, no, authUser.getNo());
 
