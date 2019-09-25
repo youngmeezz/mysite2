@@ -15,6 +15,7 @@ public class UserBoardDao {
 
 	
 	/////select 게시판 첫 조회하기User랑 Board랑 조인한 부분/////
+	
 	public List<UserBoardVo> getList(String keyword,Pagination pagination) {
 		List<UserBoardVo> result = new ArrayList<UserBoardVo>();
 		
@@ -83,6 +84,8 @@ public class UserBoardDao {
 
 		return result;
 	}
+	
+	/////검색됬을 경우에도 페이징 되도록/////
 	
 	public int getBoardCnt(String keyword) {
 		int cnt = 0;

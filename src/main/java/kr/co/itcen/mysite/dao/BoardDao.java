@@ -14,7 +14,7 @@ import kr.co.itcen.mysite.vo.UserVo;
 
 public class BoardDao {
 
-	/////insert/////
+	/////insert 글쓰기 /////
 
 	public Boolean insert(BoardVo boardVo) {
 		Boolean result = false;
@@ -65,6 +65,9 @@ public class BoardDao {
 
 		return result;
 	}
+	
+	
+	///// replyInsert 답글쓰기 ///////
 	
 	public Boolean replyInsert(BoardVo boardVo) {
 		Boolean result = false;
@@ -177,6 +180,7 @@ public class BoardDao {
 	
 	
 	/////select 게시글 제목 클릭해서 View할 내용 조회하기/////
+	
 	public BoardVo get(Long no) {
 		
 		BoardVo vo = null;
@@ -284,7 +288,7 @@ public class BoardDao {
 	
 	
 	
-	/////delete 삭제하기 /////
+	/////delete 삭제하기 status=0일경우 삭제된 게시글 입니다.-> 화면단에서 구현  /////
 	
 	public void delete(Long no, Long userNo) {
 		Connection connection = null;
