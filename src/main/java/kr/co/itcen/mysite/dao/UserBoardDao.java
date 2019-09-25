@@ -25,13 +25,13 @@ public class UserBoardDao {
 		try {
 			connection = getConnection();
 		
-			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date, b.depth, b.user_no " + 
-					"from user u, board b " + 
-					"where u.no = b.user_no and status=1 " + 
-					"and (title like ?" + 
+			String sql = "select b.no, b.title, u.name, b.hit, b.reg_date, b.depth, b.user_no ,b.status " + 
+					" from user u, board b " + 
+					" where u.no = b.user_no" + 
+					" and (title like ?" + 
 					" or contents like ?) " + 
-					"order by b.g_no desc, b.o_no asc " + 
-					"limit ?, 10;";
+					" order by b.g_no desc, b.o_no asc " + 
+					" limit ?, 10;";
 			
 			pstmt = connection.prepareStatement(sql);
 
@@ -58,6 +58,7 @@ public class UserBoardDao {
 				vo.setRegisterDate(registerDate);
 				vo.setDepth(rs.getInt("depth"));
 				vo.setUserNo(rs.getLong("user_no"));
+				vo.setStatus(rs.getInt("status"));
 				//vo.setPage(rs.getInt("page"));
 				
 				result.add(vo);
